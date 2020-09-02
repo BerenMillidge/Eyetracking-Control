@@ -20,3 +20,5 @@ Methods implemented are:
   * And any other ideas!
   
 Requires the xLabs api!
+
+The code was originally written in late 2018 so may be out of date with current APIs.
