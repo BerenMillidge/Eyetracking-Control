@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta chatset="utf-8"/>
+	<title>Canvas Demo</title>
+
+</head>
+<body>
+<style>
+	#test-div {
+		border: blue dashed 3px;
+		width: 300px;
+		height: 300px;
+		position: fixed;
+		top: 200;
+		left: 500;
+
+	}
+	#div1 {
+		border: blue dashed 3px;
+		width: 100px;
+		height: 100px;
+		position: fixed;
+		top: 10;
+		left: 300;
+	}
+	#div2 {
+		border: blue dashed 3px;
+		width: 50px;
+		height: 50px;
+		position: fixed;
+		top: 400;
+		left: 100;
+	}
+	#div3 {
+		border: blue dashed 3px;
+		width: 20px;
+		height: 600px;
+		position: fixed;
+		top: 300;
+		left: 100;
+	}
+	#div4{
+		border: blue dashed 3px;
+		width: 90px;
+		height: 10px;
+		position: fixed;
+		top: 0;
+		left: 500;
+	}
+</style>
+<h1> Head tracking using canvas</h1>
+<canvas id="canvas" style="position:fixed; margin:0; padding:0;">
+	Canvas must be enabled to see this
+</canvas>
+  <h3 id="target" style=" color: red; margin: 0; padding: 0; position: fixed; left: 200; top: 200; font-size:48; " >X</h3>
+ <div id="test-div" width="200" height="300">Test</div>
+ <div id="div1"/>
+ <div id="div2"/>
+ <div id="div3"/>
+  <h4>In canvas test copied</h4>
+ <script src="../api/xlabs.js"></script>
+ <script src='./Canvas.js'></script>
+ <script type="text/javascript" src="./ApiKey.js"></script>
+<script type="text/javascript" src="./head_dwelltime.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<html>
+<head></head>
+<body>
+	<p>local webserver.</p>
+  <h3 id="target" style=" color: red; margin: 0; padding: 0; position: fixed; left: 200; top: 200; font-size:48; " >X</h3>
+  <div id="selection-circle" style="color: blue, margin: 0; position:fixed; width: 200; height: 200; border-radius: 50%; border: red solid 2px; left: 200; top: 200;"> </div>
+
+ <script src="../api/xlabs.js"></script>
+ 
+ <script type="text/javascript" src="./ApiKey.js"></script>
+<script type="text/javascript">
+	console.log('script working!');
+	console.dir(xLabs);
+
+	var selectionTime = 1000;
+	var timeBetweenResets = Date.now();
+	var safe_radius=100;
+	var selection_circle_fixed= false;
+	var selectionCircleX = 200;
+	var selectionCircleY = 200;
+
+	function onXlabsReady(){
+		window.addEventListener("beforeunload", function() {
+			xLabs.setConfig("system.mode", "off"); // switch of xlabs before unloading
+		});
+
+		xLabs.setConfig("calibration.clear", "1"); 
+		//xlabs.setConfig("system.mode", "learning"); // set it to eye tracking mode
+		//xLabs.setConfig("browser.canvas.paintLearning","0"); 
+		// get the head position
+		xLabs.setConfig("system.mode", "head");
+		//xLabs.frame.stream.preview(); 
+		xLabs.setConfig( "browser.canvas.paintHeadPose", "0" );
+
+		var selectionCircle = document.getElementById("selection-circle");
+		selectionCircle.style.width = safe_radius;
+		selectionCircle.style.height = safe_radius;
+	}
+
+	function selectionSuccessful() {
+		//currently just turn X blue
+		var target = document.getElementById("target");
+		target.style.color="blue";
+		console.log('Successful selection!');
+		// set target to blue!
+	}
+
+	function onXlabsUpdate() {
+		console.log('Xlabs updated');
+		// get gaze position
+		var x = xLabs.getConfig("state.head.x");
+		var y = xLabs.getConfig("state.head.y");
+		var targetElement = document.getElementById( "target" );
+		var selectionCircle = document.getElementById("selection-circle");
+		var adjustedX = (screen.width * 0.5) - (x * 300);
+		var adjustedY = ( screen.height * 0.5 ) + ( y * 300 );
+		targetElement.style.left = adjustedX;
+      	targetElement.style.top  = adjustedY;
+      	// move the selection circle according to the head position
+      	if (selection_circle_fixed ===false) {
+      		selectionCircleX = adjustedX - 0.3*safe_radius;
+      		selectionCircleY = adjustedY - 0.3 * safe_radius;
+      		selectionCircle.style.left =selectionCircleX;
+      		selectionCircle.style.top= selectionCircleY;
+      		selection_circle_fixed = false;
+      		console.log('selection circle false is true!');
+      	}
+      	if (selection_circle_fixed === true) {
+      		// determine whether the point is inside or outside the selection circle
+      		console.log('selectio ncircle is fixed!');
+      		var distance = Math.sqrt( Math.pow(adjustedX - selectionCircleX, 2) + Math.pow(adjustedY - selectionCircleY, 2));
+      			// get the euclidean distance here
+      		if (distance <= safe_radius) {
+      			// so increase the time
+      			timeBetweenResets = Date.now() - timeBetweenResets;
+      			if (timeBetweenResets >= selectionTime) {
+      				// run the actual success function
+      				selectionSuccessful()
+      				// and reset
+      				timeBetweenResets = Date.now();
+      				//selection_circle_fixed = false;
+      			}
+      		}
+      		if (distance > safe_radius) {
+      			// reset the thing!
+      			timeBetweenResets = Date.now();
+      			// reset the datw!
+      			//selection_circle_fixed = false; 
+      		}
+      	}
+		}
+
+	xLabs.setup(onXlabsReady, onXlabsUpdate, null, ApiKey);
+</script>
+</body>
+</html>

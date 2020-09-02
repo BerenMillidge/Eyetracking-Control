@@ -1,0 +1,69 @@
+<html>
+<head>
+
+</head>
+<body>
+<video id="xLabsPreview" autoplay="autoplay" width="300" height="150"></video>
+<div id="button-holder" width="200" height="100"></div>
+
+ <script type="text/javascript" src="./ApiKey.js"></script>
+<script src = "../api/xlabs.js" type="text/javascript"></script>
+<script>
+
+	console.log('script working!');
+
+	function createButtons() {
+		var cameraStartButton = document.createElement("button");
+		cameraStartButton.innerHtml = "Start Camera";
+		cameraStartButton.id = "camera-start";
+		var cameraStopButton = document.createElement("button");
+		cameraStopButton.innerHtml = "Stop Camera";
+		cameraStopButton.id = "camera-stop";
+		var prevewStartButton = document.createElement("button");
+		prevewStartButton.innerHtml = "Start Preview";
+		prevewStartButton.id = "preview-start";
+		var previewStopButton = document.createElement("button");
+		previewStopButton.innerHtml = "Stop Preview";
+		previewStopButton.id = "preview-stop";
+		var buttonHolder = document.getElementById("button-holder");
+		buttonHolder.appendChild(cameraStartButton);
+		buttonHolder.appendChild(cameraStopButton);
+		buttonHolder.appendChild(prevewStartButton);
+		buttonHolder.appendChild(previewStopButton);
+	}
+
+
+	var Demo = {
+		cameraStart: function() {
+			xLabs.setConfig("frame.stream.enabled", "1");
+
+		},
+		cameraStop: function() {
+			xLabs.setConfig("frame.stream.enabled", "0");
+		},
+		previewStart: function() {
+			xLabs.setConfig("frame.stream.preview", "1");
+		},
+		previewStop: function() {
+			xLabs.setConfig("frame.stream.preview", "0");
+		}
+	};
+
+	xLabs.setup(null,null,null, ApiKey);
+
+	var buttons = document.querySelectorAll("button");
+	[].forEach.call(buttons, function(button){
+		button.addEventListener('click', function(e){
+			switch(e.target.id){
+				case 'camera-start': Demo.cameraStart; break;
+				case 'camera-stop': Demo.cameraStop(); break;
+				case 'preview-start': Demo.previewStart(); break;
+				case 'preview-stop': Demo.previewStop(); break;
+			}
+		});
+	});
+	createButtons();
+
+</script>
+</body>
+</html>
